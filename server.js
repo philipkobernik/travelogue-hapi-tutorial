@@ -102,12 +102,12 @@ server.route({
   method: 'POST',
   path: '/login',
   config: {
-    validate: {
-      payload: {
-        username: Joi.string(),
-        password: Joi.string()
-      }
-    },
+    //validate: {
+      //payload: {
+        //username: Joi.string(),
+        //password: Joi.string()
+      //}
+    //},
     auth: false,
     handler: function(request, reply) {
       Passport.authenticate('local', {
