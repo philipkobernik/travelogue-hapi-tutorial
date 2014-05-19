@@ -1,4 +1,4 @@
 module.exports = {
-  'url' : 'mongodb://localhost/passport-express-db'
+  'url' : 'mongodb://localhost/travelogue-hapi-db'
 
 };
