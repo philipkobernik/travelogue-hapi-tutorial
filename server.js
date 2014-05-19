@@ -1,6 +1,11 @@
 var Hapi = require('hapi');
 var LocalStrategy = require('passport-local').Strategy;
 var Joi = require('joi');
+var mongoose = require('mongoose');
+
+// setup database
+var configDB = require('./config/database.js');
+mongoose.connect(configDB.url); // connect to our database
 
 var config = {
   hostname: 'localhost',
@@ -67,7 +72,6 @@ if (process.env.DEBUG) {
 }
 
 require('./config/routes')(server, passport);
-
 
 server.start(function() {
   console.log('server started on port: ', server.info.port);
