@@ -15,7 +15,7 @@ module.exports = function(server, passport) {
      path: '/signup',
      handler: function(request, reply) {
        passport.authenticate('local-signup', {
-         successRedirect : '/home',
+         successRedirect : '/profile',
          failureRedirect : '/signup',
          failureFlash    : true
        })(request, reply);
@@ -27,8 +27,8 @@ module.exports = function(server, passport) {
     path: '/',
     config: { auth: 'passport' },
     handler: function (request, reply) {
-      // if already logged in, redirect to /home, else to /login
-      reply().redirect('/home');
+      // if already logged in, redirect to /profile, else to /login
+      reply().redirect('/profile');
     }
   });
 
@@ -39,7 +39,7 @@ module.exports = function(server, passport) {
       auth: false, // use this if your app uses other hapi auth schemes, otherwise optional
       handler: function(request, reply) {
         if (request.session._isAuthenticated()) {
-          reply().redirect('/home');
+          reply().redirect('/profile');
         } else {
           reply.view('login', { message: request.session.flash('loginMessage') });
         }
@@ -49,10 +49,10 @@ module.exports = function(server, passport) {
 
   server.route({
     method: 'GET',
-    path: '/home',
+    path: '/profile',
     config: { auth: 'passport' },
     handler: function (request, reply) {
-      reply.view('home', { user: request.user });
+      reply.view('profile', { user: request.user });
     }
   });
 
@@ -69,7 +69,7 @@ module.exports = function(server, passport) {
       auth: false,
       handler: function(request, reply) {
         passport.authenticate('local-login', {
-          successRedirect: '/home',
+          successRedirect: '/profile',
           failureRedirect: '/login',
           failureFlash: true
         })(request, reply)
