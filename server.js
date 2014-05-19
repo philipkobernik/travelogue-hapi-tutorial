@@ -1,12 +1,17 @@
+// load modules
+// ============
 var Hapi = require('hapi');
 var LocalStrategy = require('passport-local').Strategy;
 var Joi = require('joi');
 var mongoose = require('mongoose');
 
 // setup database
+// ==============
 var configDB = require('./config/database.js');
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(configDB.url);
 
+// configure server
+// ================
 var config = {
   hostname: 'localhost',
   port: 8000,
@@ -34,36 +39,18 @@ var server = new Hapi.Server(config.hostname, config.port, {
     path: "./views"
   }
 });
+
 server.pack.require(plugins, function(err) {
   if (err) {
     throw err;
   }
 });
 
+// configure passport
+// ==================
 server.auth.strategy('passport', 'passport');
-
-var USERS = {
-  'van': 'walmart'
-};
-
 var passport = server.plugins.travelogue.passport;
-
-require('./config/passport')(passport); // pass passport for configuration
-
-//passport.use(new LocalStrategy(function (username, password, done){
-  //if (USERS.hasOwnProperty(username) && USERS[username] == password) {
-    //return done(null, { username: username });
-  //}
-  //return done(null, false, {'message': 'invalid credentials'});
-//}));
-
-//passport.serializeUser(function (user, done) {
-  //done(null, user);
-//});
-
-//passport.deserializeUser(function (obj, done) {
-  //done(null, obj);
-//});
+require('./config/passport')(passport); // bulk of config happens here
 
 if (process.env.DEBUG) {
   server.on('internalError', function(event) {
@@ -71,10 +58,14 @@ if (process.env.DEBUG) {
   });
 }
 
+// configure routes
+// ================
 require('./config/routes')(server, passport);
 
+// start server
+// ============
 server.start(function() {
-  console.log('server started on port: ', server.info.port);
+  console.log('magic is happening on at localhost:', server.info.port);
 });
 
 
