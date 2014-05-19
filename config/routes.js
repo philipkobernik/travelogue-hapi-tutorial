@@ -1,6 +1,27 @@
 module.exports = function(server, passport) {
 
-  // routes
+	server.route({
+    method: 'GET',
+    path: '/signup',
+    handler: function(request, reply) {
+      // render the page and pass in any flash data if it exists
+      reply.view('signup'); // { message: request.flash('signupMessage') });
+    }
+	});
+
+	// process the signup form
+   server.route({
+     method: 'POST',
+     path: '/signup',
+     handler: function(request, reply) {
+       passport.authenticate('local-signup', {
+         successRedirect : '/home',
+         failureRedirect : '/signup',
+         failureFlash    : true
+       })(request, reply);
+     }
+   });
+
   server.route({
     method: 'GET',
     path: '/',
@@ -49,8 +70,8 @@ module.exports = function(server, passport) {
       auth: false,
       handler: function(request, reply) {
         passport.authenticate('local-login', {
-          successRedirect: config.urls.successRedirect,
-          failureRedirect: config.urls.failureRedirect,
+          successRedirect: '/home',
+          failureRedirect: '/login',
           failureFlash: true
         })(request, reply)
       }
