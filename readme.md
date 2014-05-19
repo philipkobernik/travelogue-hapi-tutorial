@@ -1,9 +1,12 @@
-# simple node authentication using travelogue and hapijs
+## simple node authentication using travelogue, hapi, and mongodb
 
-requires local mongo database titled travelogue-hapi-db
-you can modify the db url in config/database.js
+pre-requisites:
+ - node
+ - npm
+ - mongodb
+ - local mongo db titled travelogue-hapi-db (you can modify the db url in config/database.js)
 
-install:
+setup:
 ```
 npm install
 node server
