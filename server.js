@@ -1,5 +1,6 @@
 var Hapi = require('hapi');
 var LocalStrategy = require('passport-local').Strategy;
+var Joi = require('joi');
 
 var config = {
   hostname: 'localhost',
@@ -23,7 +24,7 @@ var plugins = {
 var server = new Hapi.Server(config.hostname, config.port);
 server.pack.require(plugins, function(err) {
   if (err) {
-    throw err;;;
+    throw err;
   }
 });
 
@@ -97,8 +98,8 @@ server.route({
   config: {
     validate: {
       payload: {
-        username: Hapi.types.String(),
-        password: Hapi.types.String()
+        username: Joi.string(),
+        password: Joi.string()
       }
     },
     auth: false,
