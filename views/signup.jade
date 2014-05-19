@@ -7,9 +7,9 @@ block content
         span.fa.fa-sign-in
         | Signup
       // show any messages that come back with authentication
-      | <% if (message.length > 0) { %>
-      .alert.alert-danger <%= message %>
-      | <% } %>
+      if message.length > 0
+        .alert.alert-danger= message
+
       // LOGIN FORM
       form(action='/signup', method='post')
         .form-group
