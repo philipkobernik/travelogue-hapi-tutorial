@@ -5,7 +5,7 @@ module.exports = function(server, passport) {
     path: '/signup',
     handler: function(request, reply) {
       // render the page and pass in any flash data if it exists
-      reply.view('signup'); // { message: request.flash('signupMessage') });
+      reply.view('signup', { message: request.session.flash('signupMessage') });
     }
 	});
 
@@ -41,7 +41,7 @@ module.exports = function(server, passport) {
         if (request.session._isAuthenticated()) {
           reply().redirect('/home');
         } else {
-          reply.view('login');
+          reply.view('login', { message: request.session.flash('loginMessage') });
         }
       }
     }
@@ -52,8 +52,7 @@ module.exports = function(server, passport) {
     path: '/home',
     config: { auth: 'passport' },
     handler: function (request, reply) {
-      //reply("ACCESS GRANTED<br/><br/><a href='/logout'>Logout</a>");
-      reply.view('home');
+      reply.view('home', { user: request.user });
     }
   });
 
