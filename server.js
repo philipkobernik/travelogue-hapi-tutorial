@@ -41,21 +41,24 @@ var USERS = {
   'van': 'walmart'
 };
 
-var Passport = server.plugins.travelogue.passport;
-Passport.use(new LocalStrategy(function (username, password, done){
-  if (USERS.hasOwnProperty(username) && USERS[username] == password) {
-    return done(null, { username: username });
-  }
-  return done(null, false, {'message': 'invalid credentials'});
-}));
+var passport = server.plugins.travelogue.passport;
 
-Passport.serializeUser(function (user, done) {
-  done(null, user);
-});
+require('./config/passport')(passport); // pass passport for configuration
 
-Passport.deserializeUser(function (obj, done) {
-  done(null, obj);
-});
+//passport.use(new LocalStrategy(function (username, password, done){
+  //if (USERS.hasOwnProperty(username) && USERS[username] == password) {
+    //return done(null, { username: username });
+  //}
+  //return done(null, false, {'message': 'invalid credentials'});
+//}));
+
+//passport.serializeUser(function (user, done) {
+  //done(null, user);
+//});
+
+//passport.deserializeUser(function (obj, done) {
+  //done(null, obj);
+//});
 
 if (process.env.DEBUG) {
   server.on('internalError', function(event) {
