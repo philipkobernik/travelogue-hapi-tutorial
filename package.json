@@ -12,6 +12,7 @@
     "passport": "~0.2.0",
     "travelogue": "~2.0.1",
     "hapi": "~4.1.4",
-    "yar": "~2.1.0"
+    "yar": "~2.1.0",
+    "passport-local": "~1.0.0"
   }
 }
