@@ -21,7 +21,14 @@ var plugins = {
   travelogue: config
 };
 
-var server = new Hapi.Server(config.hostname, config.port);
+var server = new Hapi.Server(config.hostname, config.port, {
+  views: {
+    engines: {
+      jade: "jade"
+    },
+    path: "./views"
+  }
+});
 server.pack.require(plugins, function(err) {
   if (err) {
     throw err;
@@ -76,8 +83,7 @@ server.route({
       if (request.session._isAuthenticated()) {
         reply().redirect('/home');
       } else {
-        var form = '<form action="/login" method="post"> <div> <label>Username:</label> <input type="text" name="username"/> </div> <div> <label>Password:</label> <input type="password" name="password"/> </div> <div> <input type="submit" value="Log In"/> </div> </form>';
-        reply(form);
+        reply.view('login');
       }
     }
   }
