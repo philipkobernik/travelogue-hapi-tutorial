@@ -25,10 +25,15 @@ module.exports = function(server, passport) {
   server.route({
     method: 'GET',
     path: '/',
-    config: { auth: 'passport' },
-    handler: function (request, reply) {
-      // if already logged in, redirect to /profile, else to /login
-      reply().redirect('/profile');
+    config: {
+      auth: false,
+      handler: function (request, reply) {
+        if (request.session._isAuthenticated()) {
+          reply().redirect('/profile');
+        } else {
+          reply.view('index');
+        }
+      }
     }
   });
 
