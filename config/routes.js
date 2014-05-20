@@ -1,26 +1,26 @@
 module.exports = function(server, passport) {
 
-	server.route({
+  server.route({
     method: 'GET',
     path: '/signup',
     handler: function(request, reply) {
       // render the page and pass in any flash data if it exists
       reply.view('signup', { message: request.session.flash('signupMessage') });
     }
-	});
+  });
 
-	// process the signup form
-   server.route({
-     method: 'POST',
-     path: '/signup',
-     handler: function(request, reply) {
-       passport.authenticate('local-signup', {
-         successRedirect : '/profile',
-         failureRedirect : '/signup',
-         failureFlash    : true
-       })(request, reply);
-     }
-   });
+  // process the signup form
+  server.route({
+    method: 'POST',
+    path: '/signup',
+    handler: function(request, reply) {
+      passport.authenticate('local-signup', {
+        successRedirect : '/profile',
+        failureRedirect : '/signup',
+        failureFlash    : true
+      })(request, reply);
+    }
+  });
 
   server.route({
     method: 'GET',
@@ -66,10 +66,10 @@ module.exports = function(server, passport) {
     path: '/login',
     config: {
       //validate: {
-      //payload: {
-      //username: Joi.string(),
-      //password: Joi.string()
-      //}
+        //payload: {
+          //email: Joi.string().email(),
+          //password: Joi.string()
+        //}
       //},
       auth: false,
       handler: function(request, reply) {
