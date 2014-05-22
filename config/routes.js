@@ -150,7 +150,6 @@ module.exports = function(server, passport) {
       }
     }
 
-
     return next();
   });
 };

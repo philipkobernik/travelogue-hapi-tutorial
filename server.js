@@ -24,7 +24,7 @@ var config = {
 var plugins = {
   yar: {
     cookieOptions: {
-      password: 'worldofwalmart',
+      password: 'sweetCookieJar',
       isSecure: false
     }
   },
