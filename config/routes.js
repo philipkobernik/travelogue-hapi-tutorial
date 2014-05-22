@@ -1,3 +1,5 @@
+Joi = require('joi');
+
 module.exports = function(server, passport) {
 
   server.route({
@@ -13,12 +15,20 @@ module.exports = function(server, passport) {
   server.route({
     method: 'POST',
     path: '/signup',
-    handler: function(request, reply) {
-      passport.authenticate('local-signup', {
-        successRedirect : '/profile',
-        failureRedirect : '/signup',
-        failureFlash    : true
-      })(request, reply);
+    config: {
+      validate: {
+        payload: {
+          email: Joi.string().email(),
+          password: Joi.string()
+        }
+      },
+      handler: function(request, reply) {
+        passport.authenticate('local-signup', {
+          successRedirect : '/profile',
+          failureRedirect : '/signup',
+          failureFlash    : true
+        })(request, reply);
+      }
     }
   });
 
@@ -65,12 +75,12 @@ module.exports = function(server, passport) {
     method: 'POST',
     path: '/login',
     config: {
-      //validate: {
-        //payload: {
-          //email: Joi.string().email(),
-          //password: Joi.string()
-        //}
-      //},
+      validate: {
+        payload: {
+          email: Joi.string().email(),
+          password: Joi.string()
+        }
+      },
       auth: false,
       handler: function(request, reply) {
         passport.authenticate('local-login', {
@@ -125,5 +135,22 @@ module.exports = function(server, passport) {
         path: './public'
       }
     }
+  });
+
+  server.ext('onPreResponse', function(request, next) {
+    var response = request.response;
+    if(response.isBoom) {
+      if(response.output.statusCode === 400){
+        console.log('boom 400!!');
+        // assume that route and views have same names for now
+        return next.view(request.path.replace('/',''), {
+          message: response.message,
+          email: request.payload.email
+        });
+      }
+    }
+
+
+    return next();
   });
 };
